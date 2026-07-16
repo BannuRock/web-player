@@ -1,0 +1,27 @@
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Build outputs
+dist/
+platforms/
+plugins/
+www/css/
+www/js/
+www/img/
+www/index.html
+www/assets/
+
+# Local cache & downloads
+cache/
+videos-cache/
+*.log
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# IDE configurations
+.idea/
+.vscode/
+local.properties

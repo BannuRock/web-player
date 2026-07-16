@@ -1,0 +1,7 @@
+{
+  "name": "web-player-monorepo",
+  "version": "1.0.0",
+  "scripts": {
+    "sync-build": "node sync-and-build.js"
+  }
+}
