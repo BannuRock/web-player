@@ -1,7 +1,39 @@
-const BACKEND_HOST = (window.location.hostname && window.location.hostname !== 'localhost') 
-  ? window.location.hostname 
-  : '127.0.0.1';
-export const API_BASE = `http://${BACKEND_HOST}:5000`;
+// API base URL detection with multiple fallback strategies for cross-platform support
+function getApiBase() {
+  // 1. Explicit env/JS override (highest priority)
+  if (window.API_BASE) {
+    return window.API_BASE;
+  }
+  if (import.meta.env && import.meta.env.VITE_API_BASE) {
+    return import.meta.env.VITE_API_BASE;
+  }
+
+  // 2. Running on a real web server (e.g., Vite dev server, LAN host)
+  const hostname = window.location.hostname;
+  const isFileProtocol = window.location.protocol === 'file:' || !hostname;
+  const isLocalhost = hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '[::1]';
+
+  if (!isFileProtocol) {
+    // Browser/webview with a real host: use same host, different port (5000)
+    if (isLocalhost) {
+      return `http://127.0.0.1:5000`;
+    }
+    // LAN/network host: assume backend runs on same host
+    return `http://${hostname}:5000`;
+  }
+
+  // 3. Cordova/PhoneGap: WebView + Node.js backend run INSIDE the same app/device.
+  //    nodejs-mobile listens on 127.0.0.1:5000 within the device's loopback, so the
+  //    WebView must connect to 127.0.0.1 (NOT 10.0.2.2, which is the host PC).
+  if (window.cordova || window.Cordova || isFileProtocol) {
+    return `http://127.0.0.1:5000`;
+  }
+
+  // Default fallback
+  return `http://127.0.0.1:5000`;
+}
+
+export const API_BASE = getApiBase();
 
 /**
  * Send target website URL to scraper endpoint

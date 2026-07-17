@@ -16,11 +16,10 @@
     <allow-intent href="https://*/*" />
     <platform name="android">
         <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
-            <application android:usesCleartextTraffic="true" />
+            <application android:usesCleartextTraffic="true" android:extractNativeLibs="true" />
         </edit-config>
         <config-file target="AndroidManifest.xml" parent="/*">
             <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
-            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="29" />
             <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
         </config-file>
     </platform>
